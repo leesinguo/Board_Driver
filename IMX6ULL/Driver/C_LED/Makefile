@@ -11,11 +11,17 @@ LINK_ADDR    ?= 0x87800000
 TARGET       ?= $(notdir $(CURDIR))
 
 # ---------- auto-discover source files, no need to edit ----------
+VPATH       := ../../Common/src
+
 ASM_SRCS    := $(wildcard *.s)
 C_SRCS      := $(wildcard *.c)
-LINK_SCRIPT := $(wildcard *.lds)
+# Linker script: local .lds takes precedence, fall back to common
+LINK_SCRIPT := $(or $(wildcard *.lds), $(wildcard ../../Common/lds/*.lds))
 
-OBJS := $(ASM_SRCS:.s=.o) $(C_SRCS:.c=.o)
+# common sources (basename only, VPATH resolves the path)
+COMMON_ASM_SRCS := $(notdir $(wildcard ../../Common/src/*.s))
+
+OBJS := $(ASM_SRCS:.s=.o) $(COMMON_ASM_SRCS:.s=.o) $(C_SRCS:.c=.o)
 DEPS := $(C_SRCS:.c=.d)
 
 # toolchain
@@ -25,9 +31,12 @@ LD      = $(CROSS_COMPILE)ld
 OBJCOPY = $(CROSS_COMPILE)objcopy
 OBJDUMP = $(CROSS_COMPILE)objdump
 
+# include paths
+INCLUDES := -I../../Common/include
+
 # flags
 ASFLAGS = -g -c -O2
-CFLAGS  = -g -c -Wall -MMD -O2
+CFLAGS  = -g -c -Wall -MMD -O2 $(INCLUDES)
 
 # Linker flags: use linker script if present, otherwise fall back to -Ttext
 ifneq ($(LINK_SCRIPT),)
