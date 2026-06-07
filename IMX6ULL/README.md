@@ -21,7 +21,8 @@ IMX6ULL/
     ├── C_LED/                 ← C 语言 LED 驱动（硬编码寄存器地址）
     ├── STM32_LEDC/            ← C 语言 LED 驱动（公共头文件 + 结构体指针）
     ├── SDK_LEDC/              ← C 语言 LED 驱动（NXP 官方 SDK 方式）
-    └── S_LED/                 ← 汇编语言 LED 驱动
+    ├── S_LED/                 ← 汇编语言 LED 驱动
+    └── Beep/                  ← C 语言蜂鸣器驱动（NXP 官方 SDK 方式）
 ```
 
 ### 编译方法
@@ -34,6 +35,7 @@ make C_LED        # 编译 Driver/C_LED
 make STM32_LEDC   # 编译 Driver/STM32_LEDC
 make S_LED        # 编译 Driver/S_LED
 make SDK_LEDC     # 编译 Driver/SDK_LEDC
+make Beep         # 编译 Driver/Beep
 make clean        # 清理所有驱动
 ```
 
@@ -57,6 +59,7 @@ make C_LED CROSS_COMPILE=arm-none-eabi-  # 指定交叉编译器前缀
 | `Driver/C_LED` | C | 硬编码地址宏 | GPIO1_IO03 点亮 LED，自建宏定义 |
 | `Driver/STM32_LEDC` | C | 自建结构体指针 | GPIO1_IO03 点亮 LED，imx6u.h 结构体方式 |
 | `Driver/SDK_LEDC` | C | NXP SDK | GPIO1_IO03 点亮 LED，移植 NXP 官方 SDK |
+| `Driver/Beep` | C | NXP SDK | GPIO5_IO01 驱动蜂鸣器，移植 NXP 官方 SDK |
 
 ### NXP SDK 移植说明
 
