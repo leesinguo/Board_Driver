@@ -21,3 +21,4 @@ clean:
 	@for d in $(DRIVERS); do \
 		$(MAKE) -C $(DRIVER_DIR)/$$d -f $(GENERIC_MK) clean; \
 	done
+	rm -rf *.imx

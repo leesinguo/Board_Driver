@@ -74,3 +74,56 @@ make C_LED CROSS_COMPILE=arm-none-eabi-  # 指定交叉编译器前缀
 `type.h` 同步增加了 NXP SDK 依赖的类型定义：
 - `s8/s16/s32/s64`、`u8/u16/u32/u64` — NXP SDK 标准整数类型
 - `__I` / `__O` / `__IO` — 寄存器 volatile 访问修饰
+
+### 蜂鸣器驱动说明
+
+`Driver/Beep` 是基于 NXP 官方 SDK 实现的蜂鸣器驱动，演示了如何通过 SDK API 驱动不同于 LED 的外设。
+
+**引脚配置：**
+
+| 项目 | 值 |
+|------|-----|
+| 引脚 | SNVS_TAMPER1 |
+| 复用功能 | GPIO5_IO01 |
+| 方向 | 输出 |
+| 有效电平 | 低电平（蜂鸣器响） |
+| PAD 属性 | 0x10B0 |
+
+**驱动流程：**
+
+```
+使能时钟 (CCM CCGR0~6) → 配置引脚复用 (IOMUXC) → 设置 GPIO 方向 → 输出低电平 → 死循环
+```
+
+**关键 API 调用：**
+
+```c
+// 1. 使能所有外设时钟
+CCM->CCGR0 |= 0xffffffff;   // CCM Clock Gating Register
+// ... CCGR1 ~ CCGR6 同理
+
+// 2. 配置引脚复用为 GPIO
+IOMUXC_SetPinMux(IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01, 0);
+
+// 3. 配置引脚电气属性（驱动强度、压摆率等）
+IOMUXC_SetPinConfig(IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01, 0x10B0);
+
+// 4. 设置 GPIO 方向为输出
+GPIO5->GDIR |= (1 << 1);     // bit1 = GPIO5_IO01
+
+// 5. 输出低电平驱动蜂鸣器
+GPIO5->DR = 0x0;
+```
+
+**SDK 外设调用对比：**
+
+与 `Driver/SDK_LEDC`（GPIO1_IO03）相比，本驱动展示了 NXP SDK 在不同 GPIO 端口上的复用模式：
+
+| 对比项 | SDK_LEDC | Beep |
+|--------|----------|------|
+| GPIO 端口 | GPIO1 | GPIO5 |
+| 引脚 | GPIO1_IO03 | GPIO5_IO01 |
+| IOMUXC 宏 | `IOMUXC_GPIO1_IO03_GPIO1_IO03` | `IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01` |
+| 方向寄存器 | `GPIO1->GDIR` | `GPIO5->GDIR` |
+| 数据寄存器 | `GPIO1->DR` | `GPIO5->DR` |
+| 输出电平 | 高电平（LED 亮） | 低电平（蜂鸣器响） |

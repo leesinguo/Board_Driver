@@ -21,6 +21,7 @@ C_SRCS   := $(wildcard *.c)
 ifneq ($(C_SRCS),)
 VPATH           := ../../Common/src
 COMMON_ASM_SRCS := $(notdir $(wildcard ../../Common/src/*.s))
+COMMON_C_SRCS   := $(notdir $(wildcard ../../Common/src/*.c))
 INCLUDES        := -I../../Common/include
 LINK_SCRIPT     := $(or $(wildcard *.lds), $(wildcard ../../Common/lds/*.lds))
 else
@@ -29,8 +30,8 @@ INCLUDES        :=
 LINK_SCRIPT     := $(wildcard *.lds)
 endif
 
-OBJS := $(ASM_SRCS:.s=.o) $(COMMON_ASM_SRCS:.s=.o) $(C_SRCS:.c=.o)
-DEPS := $(C_SRCS:.c=.d)
+OBJS := $(ASM_SRCS:.s=.o) $(COMMON_ASM_SRCS:.s=.o) $(COMMON_C_SRCS:.c=.o) $(C_SRCS:.c=.o)
+DEPS := $(C_SRCS:.c=.d) $(COMMON_C_SRCS:.c=.d)
 
 # ---------- toolchain ----------
 AS      = $(CROSS_COMPILE)gcc

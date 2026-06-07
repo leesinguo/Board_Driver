@@ -19,6 +19,8 @@ typedef	unsigned short int     u16;
 typedef	unsigned int 		   u32;
 typedef	unsigned long long int u64;
 
+#define     LOCAL      static
+
 #define     __I     volatile 
 #define     __O     volatile 
 #define     __IO    volatile
