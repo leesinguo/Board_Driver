@@ -1,5 +1,6 @@
 #include "fsl_common.h"
 #include "fsl_iomuxc.h"
+#include "gpio.h"
 #include "main.h"
 
 int main(void)

@@ -25,4 +25,7 @@ typedef	unsigned long long int u64;
 #define     __O     volatile 
 #define     __IO    volatile
 
+#define LOW_LEVEL                   0x0
+#define HIGH_LEVEL                  0x1      
+
 #endif /* __TYPE_H__ */
