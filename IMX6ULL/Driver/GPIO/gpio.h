@@ -49,7 +49,9 @@ typedef struct {
 #define GPIOx_IO31      31
 
 #define GPIO_LOW                    0x0             
-#define GPIO_HIGH(x)                (1<<x)   /* 输出高电平的值 */ 
+#define GPIO_HIGH(x)                (1<<x)   /* 输出高电平的值 */
+#define GPIO_PAD_VALUE_OUTPUT       0x10B0          /* 配置引脚属性（输出） */
+#define GPIO_PAD_VALUE_INPUT        0xF080          /* 配置引脚属性（输入） */
 
 extern void gpio_pin_write(GPIO_Type *const base, const uint32_t pin,  const uint8_t value);
 extern void gpio_init(GPIO_Type *const base, const uint32_t pin, const gpio_pin_config_t *config);

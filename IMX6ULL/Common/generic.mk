@@ -15,23 +15,30 @@ TARGET       ?= $(notdir $(CURDIR))
 ASM_SRCS := $(wildcard *.s)
 C_SRCS   := $(wildcard *.c)
 
+# Common source directory and Driver library directories
+COMMON_SRC  := ../../Common/src
+DRIVER_SRC  := ../../Driver
+DRIVER_DIRS := $(notdir $(wildcard $(DRIVER_SRC)/*))
+
 # ---------- auto-detect project type ----------
-# C project: use common infrastructure (startup, linker script, headers)
+# C project: use common infrastructure + auto-discover Driver library sources
 # ASM-only: standalone, no common dependencies
 ifneq ($(C_SRCS),)
-VPATH           := ../../Common/src
-COMMON_ASM_SRCS := $(notdir $(wildcard ../../Common/src/*.s))
-COMMON_C_SRCS   := $(notdir $(wildcard ../../Common/src/*.c))
-INCLUDES        := -I../../Common/include
+VPATH           := $(COMMON_SRC) $(foreach d,$(DRIVER_DIRS),$(DRIVER_SRC)/$(d))
+COMMON_ASM_SRCS := $(notdir $(wildcard $(COMMON_SRC)/*.s))
+COMMON_C_SRCS   := $(notdir $(wildcard $(COMMON_SRC)/*.c))
+DRIVER_C_SRCS   := $(foreach d,$(DRIVER_DIRS),$(notdir $(wildcard $(DRIVER_SRC)/$(d)/*.c)))
+INCLUDES        := -I../../Common/include $(foreach d,$(DRIVER_DIRS),-I$(DRIVER_SRC)/$(d))
 LINK_SCRIPT     := $(or $(wildcard *.lds), $(wildcard ../../Common/lds/*.lds))
 else
 COMMON_ASM_SRCS :=
+DRIVER_C_SRCS   :=
 INCLUDES        :=
 LINK_SCRIPT     := $(wildcard *.lds)
 endif
 
-OBJS := $(ASM_SRCS:.s=.o) $(COMMON_ASM_SRCS:.s=.o) $(COMMON_C_SRCS:.c=.o) $(C_SRCS:.c=.o)
-DEPS := $(C_SRCS:.c=.d) $(COMMON_C_SRCS:.c=.d)
+OBJS := $(ASM_SRCS:.s=.o) $(COMMON_ASM_SRCS:.s=.o) $(COMMON_C_SRCS:.c=.o) $(DRIVER_C_SRCS:.c=.o) $(C_SRCS:.c=.o)
+DEPS := $(C_SRCS:.c=.d) $(COMMON_C_SRCS:.c=.d) $(DRIVER_C_SRCS:.c=.d)
 
 # ---------- toolchain ----------
 AS      = $(CROSS_COMPILE)gcc
