@@ -7,15 +7,6 @@ void led_init(void)
 {
     gpio_pin_config_t gpio_config = {0};
 
-    /* 使能时钟 */
-    CCM->CCGR0 |= CCGRx_VALUE;
-    CCM->CCGR1 |= CCGRx_VALUE;
-    CCM->CCGR2 |= CCGRx_VALUE;
-    CCM->CCGR3 |= CCGRx_VALUE;
-    CCM->CCGR4 |= CCGRx_VALUE;
-    CCM->CCGR5 |= CCGRx_VALUE;
-    CCM->CCGR6 |= CCGRx_VALUE;
-
     /* 配置LED引脚（GPIO1_IO03） */
     IOMUXC_SetPinMux(IOMUXC_GPIO1_IO03_GPIO1_IO03, 0);
     IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO03_GPIO1_IO03, GPIO_PAD_VALUE_OUTPUT);

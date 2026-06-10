@@ -1,18 +1,20 @@
 #include "Beep.h"
 #include "Key.h"
 #include "LED.h"
+#include "Clock.h"
 #include "delay.h"
 
 int main(void)
 {
     uint8_t beep_state = 0;
     uint8_t led_state = 0;
-    int32_t i = 0;
+    uint32_t i = 0;
 
+    system_clock_init_696mhz();
+    device_clock_enable();
     key_init();
     led_init();
     beep_init();
-
     while (1) {
         uint32_t key_value;
         key_value = key_getvalue();  /* 读按键状态 */

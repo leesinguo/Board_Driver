@@ -6,14 +6,6 @@
 void beep_init(void)
 {
     gpio_pin_config_t gpio_config = {0};
-    /* 使能时钟 */
-    CCM->CCGR0 |= CCGRx_VALUE;
-    CCM->CCGR1 |= CCGRx_VALUE;
-    CCM->CCGR2 |= CCGRx_VALUE;
-    CCM->CCGR3 |= CCGRx_VALUE;
-    CCM->CCGR4 |= CCGRx_VALUE;
-    CCM->CCGR5 |= CCGRx_VALUE;
-    CCM->CCGR6 |= CCGRx_VALUE;
 
     /* 配置引脚复用为 GPIO */
     IOMUXC_SetPinMux(IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01, 0);
