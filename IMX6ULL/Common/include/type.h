@@ -68,7 +68,7 @@ typedef	unsigned long long int u64;
 #define GET_REG_BIT(reg, n)          (((reg) >> (n)) & 1U)
 
 /* 读取寄存器 [msb:lsb] 位域的值（右对齐） */
-#define GET_REG_FIELD(reg, msb, lsb) (((reg) >> (lsb)) & ((1UL << ((msb) - (lsb) + 1)) - 1))
+#define GET_REG_FIELD(reg, msb, lsb) (((reg) >> (lsb)) & ((1ULL << ((msb) - (lsb) + 1)) - 1))
 
 /* 设置寄存器第 n 位为 1 */
 #define SET_REG_BIT(reg, n)          ((void)((reg) |= (1UL << (n))))
@@ -80,10 +80,13 @@ typedef	unsigned long long int u64;
 #define SET_REG_FIELD(reg, msb, lsb, val)                  \
 do {                                                       \
     uint32_t mask =                                        \
-        ((1U << ((msb) - (lsb) + 1)) - 1U) << (lsb);      \
+        ((1ULL << ((msb) - (lsb) + 1)) - 1ULL) << (lsb);      \
                                                          \
     (reg) = ((reg) & ~mask) |                             \
             ((((uint32_t)(val)) << (lsb)) & mask);        \
 } while (0)
+
+#define DIVIDER_BUSY    1
+#define DIVIDER_FREE    0
 
 #endif /* __TYPE_H__ */
