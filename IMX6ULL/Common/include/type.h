@@ -77,8 +77,13 @@ typedef	unsigned long long int u64;
 #define CLR_REG_BIT(reg, n)          ((void)((reg) &= ~(1UL << (n))))
 
 /* 设置寄存器 [msb:lsb] 位域的值 */
-#define SET_REG_FIELD(reg, msb, lsb, value) \
-    ((void)((reg) = ((reg) & ~((1UL << ((msb) - (lsb) + 1)) - 1) << (lsb)) | \
-                    (((uint32_t)(value) & ((1UL << ((msb) - (lsb) + 1)) - 1)) << (lsb))))
+#define SET_REG_FIELD(reg, msb, lsb, val)                  \
+do {                                                       \
+    uint32_t mask =                                        \
+        ((1U << ((msb) - (lsb) + 1)) - 1U) << (lsb);      \
+                                                         \
+    (reg) = ((reg) & ~mask) |                             \
+            ((((uint32_t)(val)) << (lsb)) & mask);        \
+} while (0)
 
 #endif /* __TYPE_H__ */
