@@ -89,4 +89,9 @@ do {                                                       \
 #define DIVIDER_BUSY    1
 #define DIVIDER_FREE    0
 
+#define TRUE    1
+#define FALSE   0
+
+#define INTERRUPT_ENABLE      TRUE
+#define INTERRUPT_DISABALE    FALSE
 #endif /* __TYPE_H__ */
