@@ -42,15 +42,9 @@ __attribute__((weak)) void gpio1_29_irq_handler(uint32_t gicciarr_num, void *par
 __attribute__((weak)) void gpio1_30_irq_handler(uint32_t gicciarr_num, void *param) {}
 __attribute__((weak)) void gpio1_31_irq_handler(uint32_t gicciarr_num, void *param) {}
 
-system_irq_handler_func get_gpio1_irq_handler(uint32_t pin)
+LOCAL system_irq_handler_func get_gpio1_irq_handler(uint32_t pin)
 {
     return g_gpio1_irq_handler_table[pin];
-}
-
-/* 注册gpio中断处理函数（使用编译期token粘贴，pin必须为字面数字常量） */
-#define REGISTER_GPIOx_IRQ_HANDLER_FUNC(gpio_num, pin, table) \
-{   \
-    table[pin] = gpio##gpio_num##_##pin##_irq_handler; \
 }
 
 /* 初始化gpio1中断处理函数表 */

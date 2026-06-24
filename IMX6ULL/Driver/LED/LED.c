@@ -17,10 +17,10 @@ void led_init(void)
     gpio_init(GPIO1, GPIOx_IO03, &gpio_config);
 }
 
-void led_switch(int led, uint32_t status)
+void led_switch(Ledn_t led, uint32_t status)
 {
     switch (led) {
-    case 0:
+    case LED1:
         switch (status) {
         case DEVICE_ENABLE:
             gpio_pin_write(GPIO1, GPIOx_IO03, LOW_LEVEL);   /* 打开LED0 */
