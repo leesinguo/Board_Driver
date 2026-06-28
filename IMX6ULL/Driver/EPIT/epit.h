@@ -24,4 +24,7 @@ typedef struct {
 
 extern void epit_init(EPIT_Type *ptr, epit_config_t *conf);
 extern void clear_epit_interrupt_flag(EPIT_Type *ptr);
+extern void epit_disable(EPIT_Type *ptr);
+extern void epit_restart(epit_config_t *conf, EPIT_Type *ptr);
+extern void epit_enable(EPIT_Type *ptr);
 #endif // !__EPIT_H_

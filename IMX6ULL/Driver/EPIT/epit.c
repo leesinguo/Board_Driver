@@ -55,7 +55,7 @@ void epit_init(EPIT_Type *ptr, epit_config_t *conf)
         system_register_irq_handler(EPIT2_IRQn, get_epit_irq_handler(1), ptr);
     }
     /* 开启定时器 */
-    SET_REG_BIT(ptr->CR, BIT0);
+    epit_enable(ptr);
 }
 
 /* 清除中断标志位 */
@@ -64,3 +64,25 @@ void clear_epit_interrupt_flag(EPIT_Type *ptr)
     SET_REG_BIT(ptr->SR, BIT0);
 }
 
+/* 关闭定时器 */
+void epit_disable(EPIT_Type *ptr)
+{
+    CLR_REG_BIT(ptr->CR, BIT0);
+}
+
+/* 开启定时器 */
+void epit_enable(EPIT_Type *ptr)
+{
+    SET_REG_BIT(ptr->CR, BIT0);
+}
+
+/* 重启epit定时器 */
+void epit_restart(epit_config_t *conf, EPIT_Type *ptr)
+{
+    /* 关闭定时器 */
+    epit_disable(ptr);
+    SET_REG_FIELD(ptr->LR, BIT31, BIT0, conf->load_value);
+    
+    /* 开启定时器 */
+    epit_enable(ptr);
+}

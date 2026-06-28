@@ -142,6 +142,8 @@ void clear_gpio_interrupt_flag(GPIO_Type *ptr, uint32_t pin)
 
 void config_gpio_interrupt(GPIO_Type *gpio_ptr, const gpio_pin_config_t *conf, uint32_t pin)
 {
+    static gpio_interrupt_params_t inter_parmars = {0};
+
     if (pin <= GPIOx_IO15) {
         /* 清除指定位域 */
         SET_REG_FIELD(gpio_ptr->ICR1, 2 * pin + 1, 2 * pin, 0x00);
@@ -164,9 +166,11 @@ void config_gpio_interrupt(GPIO_Type *gpio_ptr, const gpio_pin_config_t *conf, u
     
     /* 使能GIC中断控制器 */
     GIC_EnableIRQ(conf->irq_num);
-
+    inter_parmars.ptr = gpio_ptr;
+    inter_parmars.pin_num = pin;
+    
     /* 注册中断处理函数 */
-    system_register_irq_handler(conf->irq_num, get_gpio1_irq_handler(pin), NULL);
+    system_register_irq_handler(conf->irq_num, get_gpio1_irq_handler(pin), &inter_parmars);
 
     /* 开启对应中断 */
     gpio_interrupt_enable(gpio_ptr, pin);

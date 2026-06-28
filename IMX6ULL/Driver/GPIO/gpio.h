@@ -17,12 +17,16 @@ typedef enum {
     ALL_EDGE_TRIGGER = 4
 }INTERRUPT_TRIGGER_TYPE;
 typedef struct {
-    /* data */
     gpio_pin_dir_t dir;
     uint8_t output_logic;
     INTERRUPT_TRIGGER_TYPE trigger_type;
     IRQn_Type irq_num;
 } gpio_pin_config_t;
+
+typedef struct {
+    uint32_t pin_num;
+    GPIO_Type *ptr;
+} gpio_interrupt_params_t;
 
 #define GPIOx_IO00      0
 #define GPIOx_IO01      1

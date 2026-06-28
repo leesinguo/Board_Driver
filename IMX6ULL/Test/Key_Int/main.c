@@ -17,7 +17,8 @@ void gpio1_18_irq_handler(uint32_t gicciarr_num, void *param)
         beep_switch(state);
     }
     /* 清除中断标志位 */
-    clear_gpio_interrupt_flag(GPIO1, GPIOx_IO18);
+    clear_gpio_interrupt_flag(((gpio_interrupt_params_t*)param)->ptr,
+        ((gpio_interrupt_params_t*)param)->pin_num);
 }
 
 int main(void)
@@ -42,7 +43,7 @@ int main(void)
         if (i == 50) {
             i = 0;
             led_state = !led_state;
-            led_switch(0, led_state);
+            led_switch(LED1, led_state);
         }
         delay(10);
     }
