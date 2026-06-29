@@ -70,6 +70,9 @@ typedef	unsigned long long int u64;
 /* 读取寄存器 [msb:lsb] 位域的值（右对齐） */
 #define GET_REG_FIELD(reg, msb, lsb) (((reg) >> (lsb)) & ((1ULL << ((msb) - (lsb) + 1)) - 1))
 
+/* 读取整个32位寄存器的值 */
+#define GET_REG_VALUE(reg)                 ((uint32_t)(reg))
+
 /* 设置寄存器第 n 位为 1 */
 #define SET_REG_BIT(reg, n)          ((void)((reg) |= (1UL << (n))))
 
