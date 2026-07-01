@@ -11,7 +11,7 @@
 void gpio1_18_irq_handler(uint32_t gicciarr_num, void *param)
 {
     static uint8_t state = 0;
-    delay(10);
+    delay_ms(10);
     if (gpio_pin_read(GPIO1, GPIOx_IO18) == 0) {
         state = !state;
         beep_switch(state);
@@ -45,7 +45,7 @@ int main(void)
             led_state = !led_state;
             led_switch(LED1, led_state);
         }
-        delay(10);
+        delay_ms(10);
     }
     return 0;
 }

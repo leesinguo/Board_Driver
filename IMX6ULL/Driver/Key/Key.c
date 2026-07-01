@@ -24,7 +24,7 @@ uint32_t key_getvalue(void)
     static uint8_t release = 1; /* 按键松开 */
 
     if ((release == 1) && (gpio_pin_read(GPIO1, GPIOx_IO18) == 0)) {
-        delay(10);              /* 延时消抖 */
+        delay_ms(10);              /* 延时消抖 */
         release = 0;            /* 标记按键按下 */
         if (gpio_pin_read(GPIO1, GPIOx_IO18) == 0)
             ret = 1;

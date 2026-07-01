@@ -64,7 +64,7 @@ int main(void)
             led_state = !led_state;
             led_switch(LED1, led_state);
         }
-        delay(10);
+        delay_ms(10);
     }
     return 0;
 }

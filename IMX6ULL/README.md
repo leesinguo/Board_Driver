@@ -86,7 +86,7 @@ make C_LED CROSS_COMPILE=arm-none-eabi-  # 指定交叉编译器前缀
 | 目录 | API 函数 | 说明 |
 |------|----------|------|
 | `Driver/GPIO` | `gpio_init()`, `gpio_pin_write()`, `gpio_pin_read()` | GPIO 初始化、读写、方向配置 |
-| `Driver/Delay` | `delay()`, `delay_short()` | 毫秒延时、短延时 |
+| `Driver/Delay` | `delay_ms()`, `delay_short()` | 毫秒延时、短延时 |
 | `Driver/Beep` | `beep_init()`, `beep_switch()` | 蜂鸣器初始化、开关控制 |
 | `Driver/Key` | `key_init()`, `key_getvalue()`, `led_init()`, `led_switch()` | 按键初始化/消抖读取、LED 初始化/控制 |
 

@@ -11,7 +11,6 @@
 typedef enum {
     GPT_1 = 0, 
     GPT_2,
-    GPT_3,
 }gpt_num_t;
 
 typedef struct {
@@ -27,7 +26,9 @@ typedef struct {
     table[gpt_num - 1] = gpt##gpt_num##_irq_handler; \
 }
 
-void delay(uint32_t value);
-void delay_init(void);
+extern void delay_us(uint32_t value);
+extern void delay_ms(uint32_t value);
+extern void delay_s(uint32_t value);
+extern void delay_init(void);
 
 #endif // !__DELAY_H_

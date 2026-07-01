@@ -10,7 +10,6 @@
 
 int main(void)
 {
-    uint32_t i = 0;
     uint8_t led_state = 0;
 
     imx_interrupt_init();    
@@ -20,13 +19,9 @@ int main(void)
     delay_init();
 
     while(1){
-        i++;
-        if (i == 50) {
-            i = 0;
-            led_state = !led_state;
-            led_switch(LED1, led_state);
-        }
-        delay(10);
+        led_state = !led_state;
+        led_switch(LED1, led_state);
+        delay_ms(500);
     }
     return 0;
 }

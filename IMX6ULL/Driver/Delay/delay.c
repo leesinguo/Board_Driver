@@ -39,11 +39,10 @@ system_irq_handler_func get_gpt_interrupt_hander_func(gpt_num_t num)
 /* 延时初始化函数 */
 void delay_init(void)
 {
-	static gpt_parms_t parms = {0};
 	gpt_interrupt_hander_table_init();
 
 	/* 关闭定时器 */
-	CLR_REG_BIT(GPT1->CR, BIT0);
+	close_gpt(GPT1);
 	
 	/* 软件复位 */
 	SET_REG_BIT(GPT1->CR, BIT15);
@@ -69,6 +68,7 @@ void delay_init(void)
 	// GIC_EnableIRQ(GPT1_IRQn);
 	
 	// /* register interrupt handler */
+	// static gpt_parms_t parms = {0};
 	// parms.count = 1000;
 	// parms.divide = 65;
 	// parms.ptr = GPT1;
@@ -78,11 +78,39 @@ void delay_init(void)
 	open_gpt(GPT1);
 }
 
-void delay(uint32_t value)
+void delay_us(uint32_t value)
 {
 	uint32_t count_pre = GET_REG_VALUE(GPT1->CNT);
 	uint32_t count_cur;
-	do {
+	uint64_t count_total = 0;
+	while (TRUE) {
 		count_cur = GET_REG_VALUE(GPT1->CNT);
-	} while ((count_cur - count_pre) < value);
+		if (count_cur != count_pre) {
+			if (count_cur > count_pre) {
+				count_total += count_cur - count_pre;
+			} else {
+				count_total += 0xffffffff - count_pre + count_cur;
+			}
+			count_pre = count_cur;
+			if (count_total > value) {
+					return;
+			}
+		}
+	}
+}
+
+void delay_ms(uint32_t value)
+{
+	while (value --) {
+		delay_us(1000);
+	}
+}
+
+void delay_s(uint32_t value)
+{
+	while (value --)
+	{
+		delay_ms(1000);
+	}
+	
 }
