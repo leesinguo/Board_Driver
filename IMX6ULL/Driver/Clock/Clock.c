@@ -79,6 +79,12 @@ void device_clock_enable(void)
 
 }
 
+LOCAL void uart_clock_init(void)
+{
+    CLR_REG_BIT(CCM->CSCDR1, BIT6);
+    SET_REG_FIELD(CCM->CSCDR1, BIT5, BIT0, 0x0);
+}
+
 /* 初始化系统时钟528MHZ */
 void system_clock_init_528mhz(void)
 {
@@ -102,6 +108,8 @@ void system_clock_init_528mhz(void)
     SET_REG_BIT(CCM_ANALOG->PLL_ARM, BIT13);
     /* 设置分频系数 /2*/
     SET_REG_FIELD(CCM->CACRR, BIT2, BIT0, 0x1);
+    /* 切换到ppl3_main*/
+    CLR_REG_BIT(CCM->CCSR, BIT0);
     /*切换到主时钟ppl_clk*/
     CLR_REG_BIT(CCM->CCSR, BIT2);
     pll2_pfd_clock_init();
@@ -109,6 +117,7 @@ void system_clock_init_528mhz(void)
     ahb_clk_root_init();
     ipg_clk_root_init();
     perclk_clk_root_init();
+    uart_clock_init();
 }
 
 /* 初始化系统时钟696MHZ */
@@ -133,6 +142,8 @@ void system_clock_init_696mhz(void)
     SET_REG_BIT(CCM_ANALOG->PLL_ARM, BIT13);
     /* 设置分频系数 /1*/
     SET_REG_FIELD(CCM->CACRR, BIT2, BIT0, 0x0);
+    /* 切换到ppl3_main*/
+    CLR_REG_BIT(CCM->CCSR, BIT0);
     /*切换到主时钟ppl_clk*/
     CLR_REG_BIT(CCM->CCSR, BIT2);
     pll2_pfd_clock_init();
@@ -140,4 +151,5 @@ void system_clock_init_696mhz(void)
     ahb_clk_root_init();
     ipg_clk_root_init();
     perclk_clk_root_init();
+    uart_clock_init();
 }

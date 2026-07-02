@@ -97,4 +97,6 @@ do {                                                       \
 
 #define INTERRUPT_ENABLE      TRUE
 #define INTERRUPT_DISABALE    FALSE
+#define NULL ((void *)0)
+
 #endif /* __TYPE_H__ */

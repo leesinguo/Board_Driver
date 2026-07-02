@@ -49,7 +49,7 @@ OBJDUMP = $(CROSS_COMPILE)objdump
 
 # ---------- flags ----------
 ASFLAGS = -g -c -O2
-CFLAGS  = -g -c -Wall -MMD -O2 $(INCLUDES)
+CFLAGS  = -g -c -Wall -MMD -O2 -fno-builtin $(INCLUDES)
 
 # Linker flags: use linker script if present, otherwise fall back to -Ttext
 ifneq ($(LINK_SCRIPT),)
